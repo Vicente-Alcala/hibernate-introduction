@@ -10,29 +10,45 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
+/**
+ * JPA implementation of the {@link StudentDao} interface.
+ * Handles database operations for {@link Student} entities using {@link EntityManager}.
+ */
 @Repository
 public class StudentDaoImplement implements StudentDao {
 
-    // define field for entity manager
+    /** The JPA entity manager used to interact with the persistence context. */
     private EntityManager em;
 
-    // inject entity manager using constructor injection
+    /**
+     * Constructs the DAO implementation with an injected {@link EntityManager}.
+     *
+     * @param em the JPA entity manager instance provided by Spring
+     */
     public StudentDaoImplement(EntityManager em) {
         this.em = em;
     }
 
-    // implement save method
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void save(Student theStudent) {
         em.persist(theStudent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Student findById(Integer id) {
         return em.find(Student.class, id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Student> findAll() {
         // create query
@@ -43,6 +59,9 @@ public class StudentDaoImplement implements StudentDao {
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Student> findByLastName(String lastName) {
         // create query
@@ -55,12 +74,18 @@ public class StudentDaoImplement implements StudentDao {
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void update(Student theStudent) {
         em.merge(theStudent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void delete(Integer id) {
@@ -71,6 +96,9 @@ public class StudentDaoImplement implements StudentDao {
         em.remove(student);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public int deleteAll() {
