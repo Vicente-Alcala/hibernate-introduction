@@ -12,6 +12,7 @@ import com.spring.hibernate_demo.dao.StudentDao;
 import com.spring.hibernate_demo.entity.Course;
 import com.spring.hibernate_demo.entity.Instructor;
 import com.spring.hibernate_demo.entity.InstructorDetail;
+import com.spring.hibernate_demo.entity.Review;
 import com.spring.hibernate_demo.entity.Student;
 
 /**
@@ -61,9 +62,14 @@ public class HibernateDemoApplication {
 			// deleteInstructorDetail(app);
 			// createInstructorWithCourses(app);
 			// findInstructorWithCourses(app);
-			//findCoursesForInstructor(app);
+			// findCoursesForInstructor(app);
 			// findInstructorWithCoursesJoinFetch(app);
-			updateInstructor(app);
+			// updateInstructor(app);
+			// deleteInstructorOnly(app);
+			// deleteCourseOnly(app);
+			// createCourseAndReviews(app);
+			// retrieveCourseAndReviews(app);
+			// deleteCourseAndReviews(app);
 		};
 	}
 
@@ -202,6 +208,57 @@ public class HibernateDemoApplication {
 		System.out.println("Updated!");
 		app.update(ins);
 	}
+
+	private void deleteInstructorOnly(AppDao app) {
+		int id = 3;
+		System.out.println("Delete instructor id: " + id);
+
+		app.deleteInstructorById(id);
+		System.out.println("Deleted successfully!");
+	}
+
+	private void deleteCourseOnly(AppDao app) {
+		int id = 7;
+		System.out.println("Delete course id: " + id);
+
+		app.deleteCourseById(id);
+		System.out.println("Course deleted successfully");
+	}
+
+	private void createCourseAndReviews(AppDao app) {
+		// create a course
+		Course course = new Course("How to Speed Run Spring in 1 Day");
+		// add some reviews
+		course.addReview(new Review("Great speed 2x...loved it!!!"));
+		course.addReview(new Review("I wanted the speed 0.75x :(("));
+		course.addReview(new Review("Hoping to do a speed of 3x :D. Anyways, nice!"));
+
+		// save the course
+		System.out.println("Course saved!");
+		app.save(course);
+	}
+
+	private void retrieveCourseAndReviews(AppDao app) {
+		int id = 7;
+		System.out.println("Get course and reviews from id: " + id);
+		// get the course and reviews
+		Course course = app.findCourseAndReviewsByCourseId(id);
+
+		// print the course
+		System.out.println(course);
+
+		// print the reviews
+		System.out.println(course.getReview());
+	}
+
+	private void deleteCourseAndReviews(AppDao app) {
+		int id = 8;
+		System.out.println("Delete course: " + id);
+
+		app.deleteCourseById(id);
+		System.out.println("Deleted successfully!");
+	}
+
 	/**
 	 * Creates and persists a new {@link Student} record in the database.
 	 *

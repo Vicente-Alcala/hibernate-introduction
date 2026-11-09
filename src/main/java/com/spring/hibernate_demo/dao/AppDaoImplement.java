@@ -98,4 +98,52 @@ public class AppDaoImplement implements AppDao {
     public void update(Instructor in) {
         em.merge(in);
     }
+
+    @Override 
+    @Transactional 
+    public void deleteInstructorById(int theId) {
+        // retrieve instructor
+        Instructor in = em.find(Instructor.class, theId);
+
+        // break the associations of courses for instructor
+        List<Course> courses = in.getCourses();
+        for(Course c: courses) {
+            // remove the instructor from the courses
+            c.setInstructor(null);
+        }
+
+        // delete only the instructor
+        // does not include courses associated
+        em.remove(in);
+    }
+
+    @Override
+    @Transactional 
+    public void deleteCourseById(int theId) {
+        // retrieve course
+        Course course = em.find(Course.class, theId);
+
+        if (course != null) {
+            em.remove(course);
+        }
+
+    }
+
+    @Override 
+    @Transactional 
+    public void save(Course theCourse) {
+        em.persist(theCourse);
+    }
+
+    @Override 
+    public Course findCourseAndReviewsByCourseId(int theId) {
+        // create query
+        TypedQuery<Course> query = em.createQuery("Select c FROM Course c " + "JOIN FETCH c.review " + "WHERE c.id=:data", Course.class);
+        query.setParameter("data", theId);
+
+        // execute query
+        Course course = query.getSingleResult();
+
+        return course;
+    }
 }

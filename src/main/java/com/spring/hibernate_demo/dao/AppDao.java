@@ -5,6 +5,7 @@ import java.util.List;
 import com.spring.hibernate_demo.entity.Course;
 import com.spring.hibernate_demo.entity.Instructor;
 import com.spring.hibernate_demo.entity.InstructorDetail;
+import com.spring.hibernate_demo.entity.Review;
 
 public interface AppDao {
     void save(Instructor theInstructor);
@@ -15,4 +16,8 @@ public interface AppDao {
     List<Course> findCoursesByInstructorId(int theId);
     Instructor findInstructorByIdJoinFetch(int theId);
     void update(Instructor in);
+    void deleteInstructorById(int theId);
+    void deleteCourseById(int theId);
+    void save(Course theCourse);
+    Course findCourseAndReviewsByCourseId(int theId);
 }
