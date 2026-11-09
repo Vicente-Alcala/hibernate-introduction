@@ -59,7 +59,11 @@ public class HibernateDemoApplication {
 			// deleteInstructor(app);
 			// findInstructorDetail(app);
 			// deleteInstructorDetail(app);
-			createInstructorWithCourses(app);
+			// createInstructorWithCourses(app);
+			// findInstructorWithCourses(app);
+			//findCoursesForInstructor(app);
+			// findInstructorWithCoursesJoinFetch(app);
+			updateInstructor(app);
 		};
 	}
 
@@ -92,7 +96,7 @@ public class HibernateDemoApplication {
 	}
 
 	public void deleteInstructor(AppDao app) {
-		int id = 2;
+		int id = 6;
 		System.out.println("Delete id: " + id);
 
 		app.deleteInstructorId(id);
@@ -114,7 +118,7 @@ public class HibernateDemoApplication {
 	}
 
 	private void deleteInstructorDetail(AppDao app) {
-		int id = 3;
+		int id = 6;
 		System.out.println("Delete id: " + id);
 
 		app.deleteInstructorDetail(id);
@@ -123,19 +127,19 @@ public class HibernateDemoApplication {
 
 	private void createInstructorWithCourses(AppDao app) {
 		// create the instructor and details
-		Instructor ins = new Instructor("Pieck",
-				"Finger",
-				"pieck.finger@example.com");
+		Instructor ins = new Instructor("Annie",
+				"Leonhart",
+				"annie.leonhart@example.com");
 
-		InstructorDetail deets = new InstructorDetail("Kagaku","Saving humanity");
+		InstructorDetail deets = new InstructorDetail("Art of War", "Fulfilling a warrior's duty");
 
 		// associate the objects
 		ins.setInstructorDeets(deets);
 
 		// create courses
-		Course course1 = new Course("Physics");
-		Course course2 = new Course("Biology");
-		
+		Course course1 = new Course("English");
+		Course course2 = new Course("Japanese 101");
+
 		// add courses to instructor
 		ins.add(course1);
 		ins.add(course2);
@@ -145,6 +149,59 @@ public class HibernateDemoApplication {
 		app.save(ins);
 	}
 
+	private void findInstructorWithCourses(AppDao app) {
+		int id = 4;
+		System.out.println("Find instructor id: " + id);
+
+		Instructor ins = app.findInstructorById(id);
+
+		System.out.println("Instructor: " + ins);
+		System.out.println("Courses: " + ins.getCourses());
+	}
+
+	private void findCoursesForInstructor(AppDao app) {
+		int id = 4;
+
+		// find the instructor
+		System.out.println("Find instructor id: " + id);
+		Instructor ins = app.findInstructorById(id);
+
+		System.out.println("Instructor: " + ins);
+
+		// find courses for instructor
+		System.out.println("Courses from id: " + id);
+		List<Course> courses = app.findCoursesByInstructorId(id);
+
+		// associate the objects
+		ins.setCourses(courses);
+
+		// get the courses
+		System.out.println(ins.getCourses());
+	}
+
+	private void findInstructorWithCoursesJoinFetch(AppDao app) {
+		int id = 4;
+		System.out.println("Find instructor id: " + id);
+
+		Instructor ins = app.findInstructorByIdJoinFetch(id);
+
+		System.out.println("Instructor: " + ins);
+		System.out.println("Courses: " + ins.getCourses());
+	}
+
+	private void updateInstructor(AppDao app) {
+		int id = 4;
+		System.out.println("Find instructor id: " + id);
+
+		Instructor ins = app.findInstructorById(id);
+
+		// change instructor's data
+		ins.setLastName("Kirstein");
+
+		// update the data
+		System.out.println("Updated!");
+		app.update(ins);
+	}
 	/**
 	 * Creates and persists a new {@link Student} record in the database.
 	 *
