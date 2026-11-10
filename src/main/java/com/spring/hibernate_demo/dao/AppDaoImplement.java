@@ -13,6 +13,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementation of the {@link AppDao} interface providing
+ * database operations using JPA {@link EntityManager}.
+ */
 @Repository
 public class AppDaoImplement implements AppDao {
 
@@ -22,20 +26,29 @@ public class AppDaoImplement implements AppDao {
         this.em = em;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void save(Instructor theInstructor) {
         em.persist(theInstructor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Instructor findInstructorById(int theId) {
         return em.find(Instructor.class, theId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
-    public void deleteInstructorId(int theId) {
+    public void deleteInstructorIdWithCascade(int theId) {
         // retrieve the instructor
         Instructor in = em.find(Instructor.class, theId);
 
@@ -43,26 +56,33 @@ public class AppDaoImplement implements AppDao {
         em.remove(in);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstructorDetail findInstructorDetailById(int theId) {
         return em.find(InstructorDetail.class, theId);
     }
 
-    // delete with cascade
-    // @Override
-    // @Transactional
-    // public void deleteInstructorDetail(int theId) {
-    // // retrieve the instructor detail
-    // InstructorDetail deets = em.find(InstructorDetail.class, theId);
-
-    // // delete instructor detail
-    // em.remove(deets);
-    // }
-
-    // delete without cascade
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
-    public void deleteInstructorDetail(int theId) {
+    public void deleteInstructorDetailWithCascade(int theId) {
+        // retrieve the instructor detail
+        InstructorDetail deets = em.find(InstructorDetail.class, theId);
+
+        // delete instructor detail
+        em.remove(deets);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteInstructorDetailWithoutCascade(int theId) {
         // retrieve instructor detail
         InstructorDetail deets = em.find(InstructorDetail.class, theId);
 
@@ -73,36 +93,52 @@ public class AppDaoImplement implements AppDao {
         em.remove(deets);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Course> findCoursesByInstructorId(int theId) {
         // create query
-        TypedQuery<Course> query = em.createQuery("FROM Course WHERE instructor.id =:data", Course.class);
+        TypedQuery<Course> query = em.createQuery(
+                "FROM Course WHERE instructor.id =:data", Course.class);
         query.setParameter("data", theId);
 
         List<Course> courses = query.getResultList();
         return courses;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Instructor findInstructorByIdJoinFetch(int theId) {
         // create query
+        String queryString = "SELECT i FROM Instructor i "
+                + "JOIN FETCH i.courses "
+                + "WHERE i.id = :data";
         TypedQuery<Instructor> query = em.createQuery(
-                "Select i from Instructor i JOIN FETCH i.courses WHERE i.id=:data", Instructor.class);
+                queryString, Instructor.class);
         query.setParameter("data", theId);
 
         Instructor in = query.getSingleResult();
         return in;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void update(Instructor in) {
         em.merge(in);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
-    public void deleteInstructorById(int theId) {
+    public void deleteInstructorByIdWithoutCascade(int theId) {
         // retrieve instructor
         Instructor in = em.find(Instructor.class, theId);
 
@@ -118,6 +154,9 @@ public class AppDaoImplement implements AppDao {
         em.remove(in);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void deleteCourseById(int theId) {
@@ -130,17 +169,26 @@ public class AppDaoImplement implements AppDao {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void save(Course theCourse) {
         em.persist(theCourse);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Course findCourseAndReviewsByCourseId(int theId) {
         // create query
-        TypedQuery<Course> query = em
-                .createQuery("Select c FROM Course c " + "JOIN FETCH c.review " + "WHERE c.id=:data", Course.class);
+        TypedQuery<Course> query = em.createQuery(
+                "Select c FROM Course c "
+                        + "JOIN FETCH c.review "
+                        + "WHERE c.id=:data",
+                Course.class);
         query.setParameter("data", theId);
 
         // execute query
@@ -149,6 +197,9 @@ public class AppDaoImplement implements AppDao {
         return course;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Course findCourseAndStudentByCourseId(int theId) {
         // create query
@@ -165,6 +216,9 @@ public class AppDaoImplement implements AppDao {
         return course;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Student findStudentAndCoursesByStudentId(int theId) {
         // create query
         TypedQuery<Student> query = em.createQuery(
@@ -180,15 +234,21 @@ public class AppDaoImplement implements AppDao {
         return student;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void update(Student student) {
         em.merge(student);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
-    public void deleteStudentById(int theId) {
+    public void deleteStudentWithoutCascade(int theId) {
         // retrieve student
         Student student = em.find(Student.class, theId);
 

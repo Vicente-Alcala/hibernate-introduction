@@ -12,18 +12,24 @@ import jakarta.transaction.Transactional;
 
 /**
  * JPA implementation of the {@link StudentDao} interface.
- * Handles database operations for {@link Student} entities using {@link EntityManager}.
+ * Handles database operations for {@link Student} entities
+ * using {@link EntityManager}.
  */
 @Repository
 public class StudentDaoImplement implements StudentDao {
 
-    /** The JPA entity manager used to interact with the persistence context. */
+    /**
+     * The JPA entity manager used to interact
+     * with the persistence context.
+     */
     private EntityManager em;
 
     /**
-     * Constructs the DAO implementation with an injected {@link EntityManager}.
+     * Constructs the DAO implementation with
+     * an injected {@link EntityManager}.
      *
-     * @param em the JPA entity manager instance provided by Spring
+     * @param em the JPA entity manager instance
+     * provided by Spring
      */
     public StudentDaoImplement(EntityManager em) {
         this.em = em;

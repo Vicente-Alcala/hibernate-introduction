@@ -32,7 +32,8 @@ public interface StudentDao {
     List<Student> findAll();
 
     /**
-     * Finds and retrieves students whose last name matches the specified search term.
+     * Finds and retrieves students whose last
+     * name matches the specified search term.
      *
      * @param lastName the last name to search for
      * @return a {@link List} of matching {@link Student} entities

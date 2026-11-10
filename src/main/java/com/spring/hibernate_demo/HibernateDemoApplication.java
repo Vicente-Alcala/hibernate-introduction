@@ -59,7 +59,8 @@ public class HibernateDemoApplication {
 			// findInstructor(app);
 			// deleteInstructor(app);
 			// findInstructorDetail(app);
-			// deleteInstructorDetail(app);
+			// deleteInstructorDetailWithCascade(app);
+			// deleteInstructorDetailWithoutCascade(app);
 			// createInstructorWithCourses(app);
 			// findInstructorWithCourses(app);
 			// findCoursesForInstructor(app);
@@ -68,14 +69,14 @@ public class HibernateDemoApplication {
 			// deleteInstructorOnly(app);
 			// deleteCourseOnly(app);
 			// createCourseAndReviews(app);
-			// retrieveCourseAndReviews(app);
+			retrieveCourseAndReviews(app);
 			// deleteCourseAndReviews(app);
 			// createCourseAndStudents(app);
 			// findCourseAndStudents(app);
 			// findStudentAndCourses(app);
 			// addMoreCoursesForStudent(app);
 			// deleteCourseById(app);
-			deleteStudent(app);
+			// deleteStudent(app);
 		};
 	}
 
@@ -111,7 +112,7 @@ public class HibernateDemoApplication {
 		int id = 6;
 		System.out.println("Delete id: " + id);
 
-		app.deleteInstructorId(id);
+		app.deleteInstructorIdWithCascade(id);
 		System.out.println("Deleted successfully!");
 	}
 
@@ -129,11 +130,19 @@ public class HibernateDemoApplication {
 		System.out.println("Instructor: " + inDeets.getInstructor());
 	}
 
-	private void deleteInstructorDetail(AppDao app) {
+	private void deleteInstructorDetailWithCascade(AppDao app) {
 		int id = 6;
 		System.out.println("Delete id: " + id);
 
-		app.deleteInstructorDetail(id);
+		app.deleteInstructorDetailWithCascade(id);
+		System.out.println("Deleted successfully!");
+	}
+
+	private void deleteInstructorDetailWithoutCascade(AppDao app) {
+		int id = 6;
+		System.out.println("Delete id: " + id);
+
+		app.deleteInstructorDetailWithoutCascade(id);
 		System.out.println("Deleted successfully!");
 	}
 
@@ -219,7 +228,7 @@ public class HibernateDemoApplication {
 		int id = 3;
 		System.out.println("Delete instructor id: " + id);
 
-		app.deleteInstructorById(id);
+		app.deleteInstructorByIdWithoutCascade(id);
 		System.out.println("Deleted successfully!");
 	}
 
@@ -245,7 +254,7 @@ public class HibernateDemoApplication {
 	}
 
 	private void retrieveCourseAndReviews(AppDao app) {
-		int id = 7;
+		int id = 13;
 		System.out.println("Get course and reviews from id: " + id);
 		// get the course and reviews
 		Course course = app.findCourseAndReviewsByCourseId(id);
@@ -258,7 +267,7 @@ public class HibernateDemoApplication {
 	}
 
 	private void deleteCourseAndReviews(AppDao app) {
-		int id = 8;
+		int id = 14;
 		System.out.println("Delete course: " + id);
 
 		app.deleteCourseById(id);
@@ -319,7 +328,7 @@ public class HibernateDemoApplication {
 		int id = 1;
 		System.out.println("Delete student: " + id);
 
-		app.deleteStudentById(id);
+		app.deleteStudentWithoutCascade(id);
 		System.out.println("Deleted successfully!");
 	}
 	/**
