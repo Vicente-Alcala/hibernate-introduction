@@ -9,31 +9,62 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Represents the detailed profile associated
+ * with an {@link Instructor}. Establishes a
+ * bidirectional One-to-One relationship back
+ * to the Instructor entity.
+ */
 @Entity
 @Table(name = "instructor_detail")
 public class InstructorDetail {
 
+    /**
+     * Unique identifier for the instructor detail
+     * record generated automatically by the database.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    /**
+     * The primary subject taught by the instructor.
+     */
     @Column(name = "subject")
     private String subject;
 
+    /**
+     * The hobby or personal interest of the instructor.
+     */
     @Column(name = "hobby")
     private String hobby;
 
-    // @OneToOne(mappedBy="instructorDeets", cascade= CascadeType.ALL)
+    /**
+     * The associated {@link Instructor} entity (Inverse side
+     * of the bidirectional One-to-One relationship). Mapped by
+     * the {@code instructorDeets} field in the Instructor entity.
+     * Excludes remove cascade so deleting detail records does not
+     * delete the instructor.
+     */
     @OneToOne(mappedBy = "instructorDeets", cascade = { CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH })
     private Instructor instructor;
 
+    /**
+     * Default no-argument constructor required by JPA.
+     */
     public InstructorDetail() {
     }
 
+    /**
+     * Constructs a new InstructorDetail with the specified subject and hobby.
+     *
+     * @param subject the subject area taught
+     * @param hobby   the instructor's personal hobby
+     */
     public InstructorDetail(String subject, String hobby) {
         this.subject = subject;
         this.hobby = hobby;

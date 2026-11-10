@@ -15,36 +15,57 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+/**
+ * Represents an Instructor entity in the application.
+ * Manages relationships with {@link InstructorDetail}
+ * and {@link Course} entities.
+ */
 @Entity
 @Table(name = "instructor")
 public class Instructor {
+
+    /**
+     * Unique identifier for the instructor generated
+     * automatically by the database.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    /**
+     * First name of the instructor.
+     */
     @Column(name = "first_name")
     private String firstName;
 
+    /**
+     * Last name of the instructor.
+     */
     @Column(name = "last_name")
     private String lastName;
 
+    /**
+     * Email address of the instructor.
+     */
     @Column(name = "email")
     private String email;
 
+    /**
+     * Associated instructor detail profile (One-to-One Uni
+     * /Bi-directional mapping). Cascades all persistence
+     * operations so actions on instructor cascade to details.
+     */
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instructor_detail_id")
     private InstructorDetail instructorDeets;
 
-    // Eager
-    // @OneToMany(mappedBy = "instructor", fetch = FetchType.EAGER,
-    // cascade = { CascadeType.DETACH,
-    // CascadeType.MERGE,
-    // CascadeType.PERSIST,
-    // CascadeType.REFRESH })
-    // private List<Course> courses;
-
-    // Lazy
+    /**
+     * List of courses taught by this instructor (One-to-Many
+     * Bi-directional mapping). Configured for Lazy loading and
+     * excludes remove cascade to prevent deleting courses when
+     * an instructor is removed.
+     */
     @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = {
             CascadeType.DETACH,
             CascadeType.MERGE,
@@ -52,9 +73,19 @@ public class Instructor {
             CascadeType.REFRESH })
     private List<Course> courses;
 
+    /**
+     * Default no-argument constructor required by JPA.
+     */
     public Instructor() {
     }
 
+    /**
+     * Constructs a new Instructor with the specified basic details.
+     *
+     * @param firstName the first name of the instructor
+     * @param lastName  the last name of the instructor
+     * @param email     the email address of the instructor
+     */
     public Instructor(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -69,7 +100,13 @@ public class Instructor {
         this.courses = courses;
     }
 
-    // a convenience method to link the two objects Course and Instructor
+    /**
+     * Convenience method to link a {@link Course} object
+     * with this instructor. Maintains bidirectional harmony
+     * by updating both sides of the relationship.
+     *
+     * @param tcourse the course to be added to this instructor
+     */
     public void add(Course tcourse) {
         // initializes list if it's null
         if (this.courses == null) {

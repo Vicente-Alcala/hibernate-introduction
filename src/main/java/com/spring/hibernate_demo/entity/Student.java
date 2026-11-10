@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 
 /**
  * Represents a Student entity mapped to the "student" table in the database.
+ * Establishes a Many-to-Many bidirectional relationship with {@link Course}.
  */
 @Entity
 @Table(name = "student")
@@ -38,12 +39,20 @@ public class Student {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY, cascade = { CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH })
+    /**
+     * List of courses enrolled by this student (Many-to-Many
+     * relationship). Mapped by the {@code students} field in
+     * the Course entity (Inverse side). Configured with Lazy
+     * loading and excludes remove cascade to protect course
+     * records when deleting students.
+     */
+    @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY,
+                cascade = { CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.PERSIST,
+                            CascadeType.REFRESH })
     private List<Course> courses;
-    
+
     /**
      * Default no-argument constructor required by JPA.
      */
@@ -63,83 +72,38 @@ public class Student {
         this.email = email;
     }
 
-    /**
-     * Gets the unique student ID.
-     *
-     * @return the student ID
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * Sets the unique student ID.
-     *
-     * @param id the student ID to set
-     */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * Gets the student's first name.
-     *
-     * @return the first name
-     */
     public String getFirstName() {
         return firstName;
     }
 
-    /**
-     * Sets the student's first name.
-     *
-     * @param firstName the first name to set
-     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    /**
-     * Gets the student's last name.
-     *
-     * @return the last name
-     */
     public String getLastName() {
         return lastName;
     }
 
-    /**
-     * Sets the student's last name.
-     *
-     * @param lastName the last name to set
-     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    /**
-     * Gets the student's email address.
-     *
-     * @return the email address
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * Sets the student's email address.
-     *
-     * @param email the email address to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * Returns a string representation of the Student object.
-     *
-     * @return a formatted string containing student fields
-     */
     @Override
     public String toString() {
         return "Student [id=" + id +
@@ -148,8 +112,15 @@ public class Student {
                 ", email=" + email + "]";
     }
 
+    /**
+     * Convenience method to enroll this student in a {@link Course}.
+     * Ensures bidirectional harmony by adding this student to the
+     * course's student list as well.
+     *
+     * @param course the course to add
+     */
     public void addCourse(Course course) {
-        if(courses == null) {
+        if (courses == null) {
             courses = new ArrayList<>();
         }
         courses.add(course);

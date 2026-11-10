@@ -7,21 +7,41 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * Represents a Review entity for a course.
+ * Used in a One-to-Many Uni-directional
+ * relationship managed by {@link Course}.
+ */
 @Entity
-@Table(name="review")
+@Table(name = "review")
 public class Review {
 
+    /**
+     * Unique identifier for the review generated
+     * automatically by the database.
+     */
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
-    @Column(name="comments")
+    /**
+     * The comment or feedback text for the course review.
+     */
+    @Column(name = "comments")
     private String comments;
 
+    /**
+     * Default no-argument constructor required by JPA.
+     */
     public Review() {
     }
 
+    /**
+     * Constructs a new Review with the specified comment text.
+     *
+     * @param comments the feedback or review comments
+     */
     public Review(String comments) {
         this.comments = comments;
     }
@@ -46,6 +66,5 @@ public class Review {
     public String toString() {
         return "Review [id=" + id + ", comments=" + comments + "]";
     }
-
 
 }
