@@ -70,6 +70,12 @@ public class HibernateDemoApplication {
 			// createCourseAndReviews(app);
 			// retrieveCourseAndReviews(app);
 			// deleteCourseAndReviews(app);
+			// createCourseAndStudents(app);
+			// findCourseAndStudents(app);
+			// findStudentAndCourses(app);
+			// addMoreCoursesForStudent(app);
+			// deleteCourseById(app);
+			deleteStudent(app);
 		};
 	}
 
@@ -259,6 +265,63 @@ public class HibernateDemoApplication {
 		System.out.println("Deleted successfully!");
 	}
 
+	private void createCourseAndStudents(AppDao app) {
+		// create a course
+		Course course = new Course("How To Be a FullStack Dev in Half A Day");
+
+		// create the students
+		Student student1 = new Student("Erwin", "Smith", "erwin.smith@example.com");
+		Student student2 = new Student("Levi", "Ackerman", "levi.ackerman@example.com");
+
+		// add student to the course
+		course.addStudent(student1);
+		course.addStudent(student2);
+
+		// save the course and associated students
+		app.save(course);
+		System.out.println("Successfully enrolled!");
+	}
+
+	private void findCourseAndStudents(AppDao app) {
+		int id = 9;
+		Course course = app.findCourseAndStudentByCourseId(id);
+
+		System.out.println("Course: " + course);
+		System.out.println("Students " + course.getStudents());
+	}
+
+	private void addMoreCoursesForStudent(AppDao app) {
+		int id = 8;
+		Student student = app.findStudentAndCoursesByStudentId(id);
+
+		Course course1 = new Course("How to Test without Running Application");
+		Course course2 = new Course("How to Develop without Computer");
+		Course course3 = new Course("How to Be a Legit Developer");
+
+		student.addCourse(course1);
+		student.addCourse(course2);
+		student.addCourse(course3);
+
+		System.out.println("Successfully enrolled to new courses!");
+
+		app.update(student);
+	}
+
+	private void deleteCourseById(AppDao app) {
+		int id = 12;
+		System.out.println("Delete course id: " + id);
+
+		app.deleteCourseById(id);
+		System.out.println("Course deleted successfully");
+	}
+
+	private void deleteStudent(AppDao app) {
+		int id = 1;
+		System.out.println("Delete student: " + id);
+
+		app.deleteStudentById(id);
+		System.out.println("Deleted successfully!");
+	}
 	/**
 	 * Creates and persists a new {@link Student} record in the database.
 	 *
@@ -279,6 +342,13 @@ public class HibernateDemoApplication {
 		System.out.println("Saved! Generated id: " + student.getId());
 	}
 
+	private void findStudentAndCourses(AppDao app) {
+		int id = 7;
+		Student student = app.findStudentAndCoursesByStudentId(id);
+
+		System.out.println("Student: " + student);
+		System.out.println("Courses: " + student.getCourses());
+	}
 	/**
 	 * Fetches and displays a {@link Student} entity by its unique ID.
 	 *

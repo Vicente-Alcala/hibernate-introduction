@@ -11,32 +11,41 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="course")
+@Table(name = "course")
 public class Course {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @ManyToOne(cascade= {CascadeType.DETACH, 
-        CascadeType.MERGE, 
-        CascadeType.PERSIST, 
-        CascadeType.REFRESH})
-    @JoinColumn(name="instructor_id")
+    @ManyToOne(cascade = { CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH })
+    @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name="course_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "course_id")
     private List<Review> review;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH })
+    @JoinTable(name = "course_student", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+    private List<Student> students;
 
     public Course() {
     }
@@ -59,10 +68,18 @@ public class Course {
     }
 
     public void addReview(Review rev) {
-        if(review == null) {
+        if (review == null) {
             review = new ArrayList<>();
         }
         review.add(rev);
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     public int getId() {
@@ -87,5 +104,13 @@ public class Course {
 
     public void setReview(List<Review> review) {
         this.review = review;
+    }
+
+    public void addStudent(Student stud) {
+        if (students == null) {
+            students = new ArrayList<>();
+        }
+
+        students.add(stud);
     }
 }
