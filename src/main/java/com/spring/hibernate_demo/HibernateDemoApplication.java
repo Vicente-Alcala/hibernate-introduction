@@ -27,8 +27,8 @@ public class HibernateDemoApplication {
 	}
 
 	/**
-     * Defines a {@link CommandLineRunner} bean executed automatically after the
-     * application context is loaded.
+     * Defines a {@link CommandLineRunner} bean executed automatically
+	 * after the application context is loaded.
      *
      * @param studentDao the {@link StudentDao} bean injected by Spring
      * @return a Lambda expression executing database demo operations
