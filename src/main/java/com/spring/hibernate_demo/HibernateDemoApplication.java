@@ -36,32 +36,22 @@ public class HibernateDemoApplication {
 	 * after the application context is loaded.
 	 *
 	 * @param studentDao the {@link StudentDao} bean injected by Spring
-	 * @return a Lambda expression executing database demo operations
-	 */
-	// @Bean
-	// CommandLineRunner commandLineRunner(StudentDao studentDao) {
-	// return runner -> {
-	// //createStudent(studentDao);
-	// // readStudent(studentDao);
-	// queryStudents(studentDao);
-	// // queryStudentLastName(studentDao);
-	// // updateStudent(studentDao);
-	// // deleteStudent(studentDao);
-	// // deleteAllStudent(studentDao);
-
-	// };
-	// }
-
-	/**
-	 * Defines a {@link CommandLineRunner} bean executed automatically
-	 * after the application context is loaded.
-	 *
-	 * @param app the {@link AppDao} bean injected by Spring
+	 * @param app        the {@link AppDao} bean injected by Spring
 	 * @return a Lambda expression executing database demo operations
 	 */
 	@Bean
-	CommandLineRunner commandLineRunner(AppDao app) {
+	CommandLineRunner commandLineRunner(StudentDao studentDao, AppDao app) {
 		return runner -> {
+			// --- StudentDao Operations ---
+			// createStudent(studentDao);
+			// readStudent(studentDao);
+			// queryStudents(studentDao);
+			// queryStudentLastName(studentDao);
+			// updateStudent(studentDao);
+			// deleteStudent(studentDao);
+			// deleteAllStudent(studentDao);
+
+			// --- AppDao Operations ---
 			// createInstructor(app);
 			// findInstructor(app);
 			// deleteInstructor(app);
@@ -69,14 +59,14 @@ public class HibernateDemoApplication {
 			// deleteInstructorDetailWithCascade(app);
 			// deleteInstructorDetailWithoutCascade(app);
 			// createInstructorWithCourses(app);
-			// findInstructorWithCourses(app);
+			findInstructorWithCourses(app);
 			// findCoursesForInstructor(app);
 			// findInstructorWithCoursesJoinFetch(app);
 			// updateInstructor(app);
 			// deleteInstructorOnly(app);
 			// deleteCourseOnly(app);
 			// createCourseAndReviews(app);
-			retrieveCourseAndReviews(app);
+			// retrieveCourseAndReviews(app);
 			// deleteCourseAndReviews(app);
 			// createCourseAndStudents(app);
 			// findCourseAndStudents(app);
@@ -201,7 +191,7 @@ public class HibernateDemoApplication {
 				"annie.leonhart@example.com");
 
 		InstructorDetail deets = new InstructorDetail(
-			"Art of War", "Fulfilling a warrior's duty");
+				"Art of War", "Fulfilling a warrior's duty");
 
 		// associate the objects
 		ins.setInstructorDeets(deets);
@@ -337,7 +327,7 @@ public class HibernateDemoApplication {
 		course.addReview(new Review("Great speed 2x...loved it!!!"));
 		course.addReview(new Review("I wanted the speed 0.75x :(("));
 		course.addReview(new Review(
-			"Hoping to do a speed of 3x :D. Anyways, nice!"));
+				"Hoping to do a speed of 3x :D. Anyways, nice!"));
 
 		// save the course
 		System.out.println("Course saved!");
@@ -389,9 +379,9 @@ public class HibernateDemoApplication {
 
 		// create the students
 		Student student1 = new Student(
-			"Erwin", "Smith", "erwin.smith@example.com");
+				"Erwin", "Smith", "erwin.smith@example.com");
 		Student student2 = new Student(
-			"Levi", "Ackerman", "levi.ackerman@example.com");
+				"Levi", "Ackerman", "levi.ackerman@example.com");
 
 		// add student to the course
 		course.addStudent(student1);
